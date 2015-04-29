@@ -1,7 +1,7 @@
-# nprogress-rails
+# nprogress-rails [![Gem Version](https://badge.fury.io/rb/nprogress-rails.svg)](http://badge.fury.io/rb/nprogress-rails) [![Dependency Status](https://gemnasium.com/caarlos0/nprogress-rails.svg)](https://gemnasium.com/caarlos0/nprogress-rails)  [![Stories in Ready](https://badge.waffle.io/caarlos0/nprogress-rails.png?label=ready&title=Ready)](https://waffle.io/caarlos0/nprogress-rails) 
 
 This is basically a ruby gem for asset pipeline which includes the version
-0.1.2 of the awesome [rstacruz][rstacruz]' [nprogress][lib] library.
+0.1.6 of the awesome [rstacruz][rstacruz]' [nprogress][lib] library.
 
 - [**Original lib**][lib]
 - [**Demo**][demo]
@@ -27,13 +27,11 @@ Or install it yourself as:
 
 ## Usage
 
-You basically have to add the requires.
+You basically have to add the requires to the `application.js` file:
 
-In your `application.js.coffee` (or just JS):
-
-```coffeescript
-#= require nprogress
-#= require nprogress-turbolinks
+```javascript
+//= require nprogress
+//= require nprogress-turbolinks
 ```
 
 The `nprogress-turbolinks` is required only if you use turbolinks. Using pjax
@@ -49,8 +47,22 @@ Also, into your `application.css.scss` file:
 ```
 
 The `nprogress-bootstrap` is required if you use bootstrap and have a fixed
-toolbar or anything else. tl;dr: if the console shows no erros, but the
+toolbar or anything else. tl;dr: if the console shows no errors, but the
 progress doesn't appear, try this.
+
+### Angular.js support
+
+You can try the Angular.js support with something like this (again,
+in `application.js` file):
+
+```javascript
+//= require nprogress
+//= require nprogress-angular
+
+angular.module('myApp', [ 'nprogress-rails' ]);
+```
+
+This should make all requests made with `$http` show/hide the NProgress bar.
 
 ## Customization
 
@@ -58,19 +70,14 @@ You can use any of the configurations described in the [readme](https://github.c
 with this lib. I just recommend you to do so ASAP, for example, just after
 the `nprogress-rails` require:
 
-```coffeescript
-# this is the application.js.coffee file:
+```javascript
+//= require nprogress
 
-#= require jquery
-#= require jquery_ujs
-#= require turbolinks
-#= require nprogress
-#= require nprogress-turbolinks
-
-NProgress.configure
-  showSpinner: false
-  ease: 'ease'
+NProgress.configure({
+  showSpinner: false,
+  ease: 'ease',
   speed: 500
+});
 ```
 
 Since the [v0.1.2.3 release](https://github.com/caarlos0/nprogress-rails/releases/tag/v0.1.2.3),
@@ -78,9 +85,22 @@ you can also change the color of the progressbar using SASS:
 
 ```scss
 $nprogress-color: #f1f1f1;
+$nprogress-height: 10px;
+$nprogress-zindex: 10100;
+
 @import 'nprogress';
 @import 'nprogress-bootstrap';
 ```
+
+## Ajax - jQuery or Prototype
+`nprogress-ajax` automatically triggers the NProgress bar when an Ajax
+request is started (the 'ajaxStart' event), and finishes it when the Ajax
+request completes (the 'ajaxStop' event). This works for any Ajax events
+triggered using jQuery.
+
+If you're using Prototype, you can include the `nprogress-ajax-prototype`
+javascript file instead, which works for Ajax requests started from Prototype
+(the 'onCreate' and 'onComplete' events, to be exact).
 
 ## Contributing
 
